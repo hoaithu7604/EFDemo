@@ -44,9 +44,16 @@ namespace MVC
 
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
+            
+            //Code First
             container.RegisterType<IShoesRepository, ShoesRepository>();
             container.RegisterType<IBrandRepository, BrandRepository>();
             container.RegisterType<IShoesStyleRepository, ShoesStyleRepository>();
+
+            //Database First
+            container.RegisterType<DatabaseFirst.Interface.IShoesRepository, DatabaseFirst.Repository.ShoesRepository>();
+            container.RegisterType<DatabaseFirst.Interface.IBrandRepository, DatabaseFirst.Repository.BrandRepository>();
+            container.RegisterType<DatabaseFirst.Interface.IShoesStyleRepository, DatabaseFirst.Repository.ShoesStyleRepository>();
         }
     }
 }

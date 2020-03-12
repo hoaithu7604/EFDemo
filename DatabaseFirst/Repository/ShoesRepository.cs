@@ -1,15 +1,14 @@
-﻿using CodeFirst.Entity;
-using CodeFirst.Filter;
-using CodeFirst.Interface;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
+using DatabaseFirst;
+using DatabaseFirst.Interface;
+using DatabaseFirst.Filter;
 
-
-namespace CodeFirst.Repository
+namespace DatabaseFirst.Repository
 {
     public class ShoesRepository : IShoesRepository
     {
@@ -22,7 +21,7 @@ namespace CodeFirst.Repository
         {
             try
             {
-                using (CodeFirstContext context = new CodeFirstContext())
+                using (ShoesEntities context = new ShoesEntities())
                 {
                     var entity = context.Shoes.FirstOrDefault(x => x.Id == id);
                     if (entity == null) throw new Exception();
@@ -45,9 +44,9 @@ namespace CodeFirst.Repository
         {
             try
             {
-                using(CodeFirstContext context = new CodeFirstContext())
+                using(ShoesEntities context = new ShoesEntities())
                 {
-                    var result = context.Shoes.Include(s=>s.Styles).Include(s=>s.Brand).Where(x=>!x.isDeleted);
+                    var result = context.Shoes.Include(s=>s.ShoesStyles).Include(s=>s.Brand).Where(x=>!x.isDeleted);
 
                     if (filter != null)
                     {
@@ -68,7 +67,7 @@ namespace CodeFirst.Repository
 
                         if (filter.Style_Ids != null)
                         {
-                            result = result.Where(x => x.Styles.Any(style => filter.Style_Ids.Contains(style.Id)));
+                            result = result.Where(x => x.ShoesStyles.Any(style => filter.Style_Ids.Contains(style.Id)));
                         }
                     }
 
@@ -85,24 +84,24 @@ namespace CodeFirst.Repository
         {
             try
             {
-                using(var context = new CodeFirstContext())
+                using(var context = new ShoesEntities())
                 {
                     var result = context.Shoes.FirstOrDefault(x => x.Id == shoes.Id);
                     if (result == null)
                     {
                         shoes.Id = Guid.NewGuid();
-                        shoes.Styles = shoes.Styles.Select(x => context.ShoesStyles.Find(x.Id)).ToList();
+                        shoes.ShoesStyles = shoes.ShoesStyles.Select(x => context.ShoesStyles.Find(x.Id)).ToList();
                         shoes.Brand = context.Brands.Find(shoes.Brand.Id);
                         shoes.CreatedDate = DateTime.Now;
                         result = context.Shoes.Add(shoes);
                     }
                     else
                     {
-                        result.Styles.Clear();
-                        var styles = shoes.Styles.Select(x => context.ShoesStyles.Find(x.Id)).ToList();
+                        result.ShoesStyles.Clear();
+                        var styles = shoes.ShoesStyles.Select(x => context.ShoesStyles.Find(x.Id)).ToList();
                         foreach (var style in styles)
                         {
-                            result.Styles.Add(style);
+                            result.ShoesStyles.Add(style);
                         }
                         result.Name = shoes.Name;
                         result.ModifiedBy = shoes.ModifiedBy;

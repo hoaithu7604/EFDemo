@@ -1,0 +1,266 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ShoesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Brands">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="CreateBy" Type="nvarchar(max)" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="ModifiedBy" Type="nvarchar(max)" />
+          <Property Name="isDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Shoes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="ImageUrl" Type="nvarchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="CreateBy" Type="nvarchar(max)" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="ModifiedBy" Type="nvarchar(max)" />
+          <Property Name="isDeleted" Type="bit" Nullable="false" />
+          <Property Name="Brand_Id" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="ShoesStyles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="CreateBy" Type="nvarchar(max)" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="ModifiedBy" Type="nvarchar(max)" />
+          <Property Name="isDeleted" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ShoesStyleShoes">
+          <Key>
+            <PropertyRef Name="ShoesStyle_Id" />
+            <PropertyRef Name="Shoes_Id" />
+          </Key>
+          <Property Name="ShoesStyle_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Shoes_Id" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_dbo_Shoes_dbo_Brands_Brand_Id">
+          <End Role="Brands" Type="Self.Brands" Multiplicity="0..1" />
+          <End Role="Shoes" Type="Self.Shoes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brands">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Shoes">
+              <PropertyRef Name="Brand_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ShoesStyleShoes_dbo_Shoes_Shoes_Id">
+          <End Role="Shoes" Type="Self.Shoes" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ShoesStyleShoes" Type="Self.ShoesStyleShoes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Shoes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ShoesStyleShoes">
+              <PropertyRef Name="Shoes_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ShoesStyleShoes_dbo_ShoesStyles_ShoesStyle_Id">
+          <End Role="ShoesStyles" Type="Self.ShoesStyles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ShoesStyleShoes" Type="Self.ShoesStyleShoes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ShoesStyles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ShoesStyleShoes">
+              <PropertyRef Name="ShoesStyle_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ShoesModelStoreContainer">
+          <EntitySet Name="Brands" EntityType="Self.Brands" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Shoes" EntityType="Self.Shoes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ShoesStyles" EntityType="Self.ShoesStyles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ShoesStyleShoes" EntityType="Self.ShoesStyleShoes" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_Shoes_dbo_Brands_Brand_Id" Association="Self.FK_dbo_Shoes_dbo_Brands_Brand_Id">
+            <End Role="Brands" EntitySet="Brands" />
+            <End Role="Shoes" EntitySet="Shoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ShoesStyleShoes_dbo_Shoes_Shoes_Id" Association="Self.FK_dbo_ShoesStyleShoes_dbo_Shoes_Shoes_Id">
+            <End Role="Shoes" EntitySet="Shoes" />
+            <End Role="ShoesStyleShoes" EntitySet="ShoesStyleShoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ShoesStyleShoes_dbo_ShoesStyles_ShoesStyle_Id" Association="Self.FK_dbo_ShoesStyleShoes_dbo_ShoesStyles_ShoesStyle_Id">
+            <End Role="ShoesStyles" EntitySet="ShoesStyles" />
+            <End Role="ShoesStyleShoes" EntitySet="ShoesStyleShoes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ShoesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Brand">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreateBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="isDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Shoes" Relationship="Self.FK_dbo_Shoes_dbo_Brands_Brand_Id" FromRole="Brands" ToRole="Shoes" />
+        </EntityType>
+        <EntityType Name="Shoes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImageUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreateBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="isDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="Brand_Id" Type="Guid" />
+          <NavigationProperty Name="Brand" Relationship="Self.FK_dbo_Shoes_dbo_Brands_Brand_Id" FromRole="Shoes" ToRole="Brands" />
+          <NavigationProperty Name="ShoesStyles" Relationship="Self.ShoesStyleShoes" FromRole="Shoes" ToRole="ShoesStyles" />
+        </EntityType>
+        <EntityType Name="ShoesStyle">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="CreateBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="isDeleted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Shoes" Relationship="Self.ShoesStyleShoes" FromRole="ShoesStyles" ToRole="Shoes" />
+        </EntityType>
+        <Association Name="FK_dbo_Shoes_dbo_Brands_Brand_Id">
+          <End Role="Brands" Type="Self.Brand" Multiplicity="0..1" />
+          <End Role="Shoes" Type="ShoesModel.Shoes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brands">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Shoes">
+              <PropertyRef Name="Brand_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ShoesStyleShoes">
+          <End Role="Shoes" Type="ShoesModel.Shoes" Multiplicity="*" />
+          <End Role="ShoesStyles" Type="Self.ShoesStyle" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="ShoesEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Brands" EntityType="Self.Brand" />
+          <EntitySet Name="Shoes1" EntityType="ShoesModel.Shoes" />
+          <EntitySet Name="ShoesStyles" EntityType="Self.ShoesStyle" />
+          <AssociationSet Name="FK_dbo_Shoes_dbo_Brands_Brand_Id" Association="Self.FK_dbo_Shoes_dbo_Brands_Brand_Id">
+            <End Role="Brands" EntitySet="Brands" />
+            <End Role="Shoes" EntitySet="Shoes1" />
+          </AssociationSet>
+          <AssociationSet Name="ShoesStyleShoes" Association="Self.ShoesStyleShoes">
+            <End Role="Shoes" EntitySet="Shoes1" />
+            <End Role="ShoesStyles" EntitySet="ShoesStyles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ShoesModelStoreContainer" CdmEntityContainer="ShoesEntities">
+          <EntitySetMapping Name="Brands">
+            <EntityTypeMapping TypeName="ShoesModel.Brand">
+              <MappingFragment StoreEntitySet="Brands">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Shoes1">
+            <EntityTypeMapping TypeName="ShoesModel.Shoes">
+              <MappingFragment StoreEntitySet="Shoes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+                <ScalarProperty Name="Brand_Id" ColumnName="Brand_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ShoesStyles">
+            <EntityTypeMapping TypeName="ShoesModel.ShoesStyle">
+              <MappingFragment StoreEntitySet="ShoesStyles">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ShoesStyleShoes" TypeName="ShoesModel.ShoesStyleShoes" StoreEntitySet="ShoesStyleShoes">
+            <EndProperty Name="Shoes">
+              <ScalarProperty Name="Id" ColumnName="Shoes_Id" />
+            </EndProperty>
+            <EndProperty Name="ShoesStyles">
+              <ScalarProperty Name="Id" ColumnName="ShoesStyle_Id" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

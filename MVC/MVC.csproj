@@ -140,7 +140,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\DatabaseFirstController.cs" />
+    <Compile Include="Controllers\CodeFirstController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -179,7 +180,8 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\CodeFirst\Index.cshtml" />
+    <Content Include="Views\DatabaseFirst\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -202,6 +204,10 @@
     <ProjectReference Include="..\CodeFirst\CodeFirst.csproj">
       <Project>{76fb1214-6a80-4247-8637-01b72514b80d}</Project>
       <Name>CodeFirst</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DatabaseFirst\DatabaseFirst.csproj">
+      <Project>{e04f1f16-b3d7-477b-beaf-024695db79ca}</Project>
+      <Name>DatabaseFirst</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
