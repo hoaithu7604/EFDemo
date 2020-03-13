@@ -18,6 +18,8 @@ namespace DatabaseFirst
         public ShoesEntities()
             : base("name=ShoesEntities")
         {
+            var ensureDLLIsCopied =
+               System.Data.Entity.SqlServer.SqlProviderServices.Instance;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

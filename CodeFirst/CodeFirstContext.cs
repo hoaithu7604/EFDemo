@@ -12,7 +12,8 @@ namespace CodeFirst
     {
         public CodeFirstContext():base("name=ShoesDb")
         {
-
+            var ensureDLLIsCopied =
+               System.Data.Entity.SqlServer.SqlProviderServices.Instance;
         }
         public DbSet<Shoes> Shoes { get; set; }
         public DbSet<ShoesStyle> ShoesStyles { get; set; }
