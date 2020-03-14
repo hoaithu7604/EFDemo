@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CodeFirst.Entity;
+using CodeFirst.Filter;
 
 namespace MVC.Controllers
 {
@@ -20,11 +21,22 @@ namespace MVC.Controllers
             this._brandRepository = brandRepository;
         }
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(string Name, List<string> Styles, List<string> Brands)
         {
-            var result = this._shoesRepository.Get();
+            var filter = new ShoesFilter();
+            if (Name != null) filter.Name = Name;
+            if (Styles != null) filter.Style_Ids = Styles.Select(x => Guid.Parse(x)).ToList();
+            if (Brands != null) filter.Brand_Ids = Brands.Select(x => Guid.Parse(x)).ToList();
+
+            var result = this._shoesRepository.Get(filter);
+
+            ViewBag.SelectedName = Name;
+            ViewBag.SelectedStyles = Styles != null ? Styles : new List<string>();
+            ViewBag.SelectedBrands = Brands != null ? Brands : new List<string>();
+
             ViewBag.Styles = this._shoesStyleRepository.Get();
             ViewBag.Brand = this._brandRepository.Get();
+            
             return View(result);
         }
         [HttpPost]
